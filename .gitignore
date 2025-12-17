@@ -2,3 +2,7 @@ backend/node_modules
 backend/dist
 backend/.env
 backend/tsconfig.tsbuildinfo
+
+frontend
+frontend/*
+frontend/*.*
