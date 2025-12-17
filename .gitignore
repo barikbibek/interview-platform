@@ -6,3 +6,5 @@ backend/tsconfig.tsbuildinfo
 frontend
 frontend/*
 frontend/*.*
+
+package.json
