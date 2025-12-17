@@ -4,7 +4,5 @@ backend/.env
 backend/tsconfig.tsbuildinfo
 
 frontend
-frontend/*
-frontend/*.*
 
-package.json
+/package.json
