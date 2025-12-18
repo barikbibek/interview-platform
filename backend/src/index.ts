@@ -1,10 +1,15 @@
 import express from 'express';
 import path from 'path';
+import { serve } from 'inngest/express'
 import { ENV } from './lib/env';
+import { connectDB } from './lib/db';
+import { inngest, functions } from './lib/inngest';
 
 const app = express()
 
 const ROOT_DIR = process.cwd()
+
+app.use('/api/inngest', serve({ client: inngest, functions }))
 
 app.get('/health', (req, res) => {
     res.send("hello")
@@ -20,8 +25,18 @@ if(ENV.NODE_ENV === "production"){
     })
 }else{
     app.get("/{*any}", (req, res) => {
-        res.send('Development mode')
+        res.send('Running in development mode')
     })
 }
 
-app.listen(ENV.PORT , () => console.log(`Server is listenning on PORT: ${ENV.PORT}`))
+const startServer = async () => {
+    try {
+        await connectDB()
+        app.listen(ENV.PORT , () => console.log(`Server is listenning on PORT: ${ENV.PORT}`))
+    } catch (error) {
+        const err = error as Error
+        console.log(`Error starting the server : ${err.message}`)
+    }
+}
+
+startServer()
