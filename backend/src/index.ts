@@ -9,6 +9,8 @@ const app = express()
 
 const ROOT_DIR = process.cwd()
 
+app.use(express.json())
+
 app.use('/api/inngest', serve({ client: inngest, functions }))
 
 app.get('/health', (req: Request, res: Response) => {
