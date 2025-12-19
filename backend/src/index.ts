@@ -11,6 +11,9 @@ const ROOT_DIR = process.cwd()
 
 app.use('/api/inngest', serve({ client: inngest, functions }))
 
+console.log(ENV.INNGEST_EVENT_KEY)
+console.log(ENV.INNGEST_SIGNING_KEY)
+
 app.get('/health', (req: Request, res: Response) => {
     res.send("hello")
 })
