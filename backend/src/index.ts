@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import path from 'path';
 import { serve } from 'inngest/express'
 import { ENV } from './lib/env';
@@ -11,7 +11,7 @@ const ROOT_DIR = process.cwd()
 
 app.use('/api/inngest', serve({ client: inngest, functions }))
 
-app.get('/health', (req, res) => {
+app.get('/health', (req: Request, res: Response) => {
     res.send("hello")
 })
 
@@ -20,15 +20,15 @@ if(ENV.NODE_ENV === "production"){
     const filePath = path.join(ROOT_DIR, 'public/dist')
     app.use(express.static(filePath))
 
-    app.get("/{*any}", (req, res) => {
+    app.get("/{*any}", (req: Request, res: Response) => {
         res.sendFile(path.join(filePath, "index.html"))
     })
 }else{
-    app.get("/{*any}", (req, res) => {
+    app.get("/{*any}", (req: Request, res: Response) => {
         res.send('Running in development mode')
     })
 }
-
+``
 const startServer = async () => {
     try {
         await connectDB()
