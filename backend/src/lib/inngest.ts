@@ -4,7 +4,7 @@ import User from "../models/User";
 import { ENV } from "./env";
 
 export const inngest = new Inngest({ 
-  id: ENV.INNGEST_APP_ID!
+  id: ENV.INNGEST_APP_ID! || "interview"
  })
 
 
