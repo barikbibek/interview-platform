@@ -4,6 +4,8 @@ import { serve } from 'inngest/express'
 import { ENV } from './lib/env';
 import { connectDB } from './lib/db';
 import { inngest, functions } from './lib/inngest';
+import chatRoute from './routes/chat.route'
+import sessionRoute from './routes/session.route'
 
 const app = express()
 
@@ -12,6 +14,8 @@ const ROOT_DIR = process.cwd()
 app.use(express.json())
 
 app.use('/api/inngest', serve({ client: inngest, functions }))
+app.use('/api/chat', chatRoute)
+app.use('/api/sessions', sessionRoute)
 
 app.get('/health', (req: Request, res: Response) => {
     res.send("hello")
