@@ -1,17 +1,22 @@
 import express, { Request, Response } from 'express';
-import path from 'path';
 import { serve } from 'inngest/express'
 import { ENV } from './lib/env';
 import { connectDB } from './lib/db';
 import { inngest, functions } from './lib/inngest';
 import chatRoute from './routes/chat.route'
 import sessionRoute from './routes/session.route'
+import cors from 'cors'
+import { clerkMiddleware } from '@clerk/express';
 
 const app = express()
-
+app.use(cors({
+    origin: "http://localhost:5173", // EXACT frontend origin
+    credentials: true,               // allow cookies
+  }))
 const ROOT_DIR = process.cwd()
 
 app.use(express.json())
+app.use(clerkMiddleware())
 
 app.use('/api/inngest', serve({ client: inngest, functions }))
 app.use('/api/chat', chatRoute)
@@ -22,19 +27,19 @@ app.get('/health', (req: Request, res: Response) => {
 })
 
 
-if(ENV.NODE_ENV === "production"){
-    const filePath = path.join(ROOT_DIR, 'public/dist')
-    app.use(express.static(filePath))
+// if(ENV.NODE_ENV === "production"){
+//     const filePath = path.join(ROOT_DIR, 'public/dist')
+//     app.use(express.static(filePath))
 
-    app.get("/{*any}", (req: Request, res: Response) => {
-        res.sendFile(path.join(filePath, "index.html"))
-    })
-}else{
-    app.get("/{*any}", (req: Request, res: Response) => {
-        res.send('Running in development mode')
-    })
-}
-``
+//     app.get("/{*any}", (req: Request, res: Response) => {
+//         res.sendFile(path.join(filePath, "index.html"))
+//     })
+// }else{
+//     app.get("/{*any}", (req: Request, res: Response) => {
+//         res.send('Running in development mode')
+//     })
+// }
+
 const startServer = async () => {
     try {
         await connectDB()
