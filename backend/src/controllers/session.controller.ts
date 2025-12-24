@@ -17,7 +17,12 @@ export async function createSession(req: any, res: any) {
         await call.getOrCreate({
             data: {
                 created_by_id: clerkId,
-                custom: { problem, difficulty, sessionId: sessionId.toString() }
+                custom: { problem, difficulty, sessionId: sessionId.toString() },
+                settings_override: {
+                    recording: {
+                        mode: "disabled"
+                    }
+                }
             }
         })
 
